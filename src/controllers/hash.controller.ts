@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
 import { handleRes } from "../utils/response";
+import { controllerFunction } from "src/types";
 
-export const createHash = (req: Request, res: Response, next: NextFunction) => {
+export const createHash: controllerFunction = (req, res, next) => {
   const text: string = req.body.password;
 
   if (!text) return next(new Error("Require A String To Hash"));
@@ -15,11 +15,7 @@ export const createHash = (req: Request, res: Response, next: NextFunction) => {
   handleRes({ data: `${salt}:${hash}`, txt: "Hash Generated" }, res);
 };
 
-export const compareHash = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const compareHash: controllerFunction = (req, res, next) => {
   const secret: string = req.body.secret;
   const pwd: string = req.body.password;
 

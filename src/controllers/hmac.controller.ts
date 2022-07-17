@@ -1,12 +1,8 @@
 import { createHmac, timingSafeEqual } from "crypto";
-import { NextFunction, Request, Response } from "express";
+import { controllerFunction } from "src/types";
 import { handleRes } from "src/utils/response";
 
-export const createHmacHash = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const createHmacHash: controllerFunction = (req, res, next) => {
   let text: string = req.body.text;
 
   if (!text) return next(new Error("Required Text To Hash"));
@@ -21,11 +17,7 @@ export const createHmacHash = (
   handleRes({ data: hmac, txt: "hmac Hash Generated !!" }, res);
 };
 
-export const compareHmacHash = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const compareHmacHash: controllerFunction = (req, res, next) => {
   let hmacText: string = req.body.hmac;
   let text: string = req.body.text;
 
