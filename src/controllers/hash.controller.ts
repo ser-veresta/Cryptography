@@ -3,7 +3,7 @@ import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
 import { handleRes } from "../utils/response";
 
 export const createHash = (req: Request, res: Response, next: NextFunction) => {
-  const text: string = req.body.txt;
+  const text: string = req.body.password;
 
   if (!text) return next(new Error("Require A String To Hash"));
 
