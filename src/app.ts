@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
+import { cipherRoute } from "./routes/cipher";
 import { hashRoute } from "./routes/hash.route";
 import { hmacRoute } from "./routes/hmac.route";
 import { handleRes } from "./utils/response";
@@ -19,6 +20,8 @@ app.get("/", (_, res) => {
 app.use("/hash", hashRoute);
 
 app.use("/hmac", hmacRoute);
+
+app.use("/cipher", cipherRoute);
 
 app.use((req, res) => {
   handleRes(
