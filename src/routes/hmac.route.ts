@@ -2,7 +2,7 @@ import express from "express";
 import {
   compareHmacHash,
   createHmacHash,
-} from "src/controllers/hmac.controller";
+} from "../controllers/hmac.controller";
 
 const router = express.Router();
 
