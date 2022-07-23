@@ -1,5 +1,5 @@
 import { createHmac, timingSafeEqual } from "crypto";
-import { controllerFunction } from "src/types";
+import { controllerFunction } from "../types";
 import { handleRes } from "../utils/response";
 
 export const createHmacHash: controllerFunction = (req, res, next) => {

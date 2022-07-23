@@ -1,6 +1,6 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
 import { handleRes } from "../utils/response";
-import { controllerFunction } from "src/types";
+import { controllerFunction } from "../types";
 
 export const createHash: controllerFunction = (req, res, next) => {
   const text: string = req.body.password;
