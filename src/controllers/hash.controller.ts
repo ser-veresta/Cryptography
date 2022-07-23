@@ -1,8 +1,11 @@
-import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
+import { randomBytes, scrypt, timingSafeEqual } from "crypto";
+import { promisify } from "node:util";
 import { handleRes } from "../utils/response";
 import { controllerFunction } from "../types";
 
-export const createHash: controllerFunction = (req, res, next) => {
+const asyncScrypt = promisify(scrypt);
+
+export const createHash: controllerFunction = async (req, res, next) => {
   const text: string = req.body.password;
 
   if (!text) return next(new Error("Require A String To Hash"));
@@ -10,12 +13,16 @@ export const createHash: controllerFunction = (req, res, next) => {
   let saltLen = Number(process.env.SALT_LENGTH) || 16;
   let salt = randomBytes(saltLen).toString("hex");
 
-  let hash = scryptSync(text, salt, 64, { N: 1024 }).toString("hex");
+  let hash = await asyncScrypt(text, salt, 64);
+
+  if (!Buffer.isBuffer(hash)) return next(new Error("Internal Error"));
+
+  hash = hash.toString("hex");
 
   handleRes({ data: `${salt}:${hash}`, txt: "Hash Generated" }, res);
 };
 
-export const compareHash: controllerFunction = (req, res, next) => {
+export const compareHash: controllerFunction = async (req, res, next) => {
   const secret: string = req.body.secret;
   const pwd: string = req.body.password;
 
@@ -23,7 +30,9 @@ export const compareHash: controllerFunction = (req, res, next) => {
   if (!secret) return next(new Error("Required A Secret To Compare"));
 
   let [salt, hash] = secret.split(":");
-  let pwdHash = scryptSync(pwd, salt, 64, { N: 1024 });
+  let pwdHash = await asyncScrypt(pwd, salt, 64);
+
+  if (!Buffer.isBuffer(pwdHash)) return next(new Error("Internal Error"));
 
   let hashBuffer = Buffer.from(hash, "hex");
   let match = timingSafeEqual(hashBuffer, pwdHash);
