@@ -19,6 +19,6 @@ router.post("/KeyEncrypt", pubEncrypt);
 
 router.post("/keyDecrypt", pubDecrypt);
 
-router.get("/info", (_, res) => res.send("Hash"));
+router.get("/info", (_, res) => res.send("Cipher"));
 
 export const cipherRoute = router;
