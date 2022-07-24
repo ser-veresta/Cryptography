@@ -27,7 +27,7 @@ export const symEncrypt: controllerFunction = (req, res, next) => {
 };
 
 export const symDecrypt: controllerFunction = (req, res, next) => {
-  const msg: string = req.body.encrypted_message;
+  const msg: string = req.body.encryptedMessage;
   const secret: string = req.body.secret;
 
   if (!msg) return next(new Error("Required Encrypted Message To Decrypt"));
